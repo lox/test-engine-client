@@ -1,12 +1,8 @@
 steps:
   - name: ":golangci-lint: Lint"
+    command: golangci-lint run
     plugins:
-      - docker#v5.11.0:
-          image: golangci/golangci-lint:v1.61.0
-          workdir: /go/src/github.com/your-org/your-repo
-          command:
-            - golangci-lint
-            - run
+      - elastic/hermit#v1.0.0: ~
 
   - name: ":go: Tests"
     command: ".buildkite/steps/tests.sh -race"
@@ -14,6 +10,7 @@ steps:
       - cover.{html,out}
       - internal/api/pacts/*
     plugins:
+      - elastic/hermit#v1.0.0: ~
       - docker-compose#v4.14.0:
           config: .buildkite/docker-compose.yml
           cli-version: 2
